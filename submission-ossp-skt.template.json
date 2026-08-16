@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "challenge_id": "ossp-2026-llm-router-challenge",
+  "repository_url": "https://github.com/<TEAM>/ossp-2026-llm-router-challenge",
+  "commit_sha": "<평가할 커밋의 40자 SHA — models/final-v1 포함 커밋>",
+  "image_digest": "<registry>/<repo>@sha256:<push 후 얻은 64자 다이제스트>",
+  "primary_license": "Apache-2.0"
+}

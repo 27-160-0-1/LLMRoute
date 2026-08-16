@@ -1,0 +1,45 @@
+{
+ "blend_members": [
+  "xgb-mono",
+  "irt1d",
+  "knn-k40",
+  "lgbm"
+ ],
+ "cost_mean_members": [
+  "lgbm",
+  "xgb-mono"
+ ],
+ "rates": [
+  [
+   1.0,
+   4.0
+  ],
+  [
+   2.127,
+   8.509
+  ],
+  [
+   6.565,
+   26.26
+  ]
+ ],
+ "fast": {
+  "decision": "greedy",
+  "allow_k1": false,
+  "utilization": 0.93
+ },
+ "balanced": {
+  "decision": "greedy",
+  "allow_k1": false,
+  "utilization": 0.88
+ },
+ "premium": {
+  "decision": "two-stage",
+  "k1_utilization": 0.65,
+  "fill_utilization": 0.7,
+  "k1_cost_cap": 0.1,
+  "k1_cost_source": "lgbm-q90"
+ },
+ "feature_version": 2,
+ "registry_ref": "E049"
+}

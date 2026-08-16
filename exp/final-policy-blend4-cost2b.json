@@ -1,0 +1,204 @@
+{
+ "summary": {
+  "pred_set": "blend4-cost2b",
+  "premium_d4": [
+   0.65,
+   0.7
+  ],
+  "chosen_utilization": {
+   "fast": 0.93,
+   "balanced": 0.85,
+   "premium": null
+  },
+  "risk": {
+   "fast": {
+    "u": 0.93,
+    "dev_score": 0.65909,
+    "dev_ratio": 1.18044,
+    "boot": 0.001,
+    "stress": 0.029,
+    "stress_p99": 1.2693082459063425,
+    "clt": 0.0
+   },
+   "balanced": {
+    "u": 0.85,
+    "dev_score": 0.69119,
+    "dev_ratio": 1.69812,
+    "boot": 0.006,
+    "stress": 0.02,
+    "stress_p99": 2.0612516381897943,
+    "clt": 0.0
+   },
+   "premium": {
+    "u": null,
+    "dev_score": 0.71051,
+    "dev_ratio": 2.82389,
+    "boot": 0.005,
+    "stress": 0.019,
+    "stress_p99": 4.075193197386866,
+    "clt": 0.0
+   }
+  },
+  "dev_final": "0.684147727273",
+  "dev_tiers": {
+   "fast": [
+    "0.659090909091",
+    "1.180437123011"
+   ],
+   "balanced": [
+    "0.691193181818",
+    "1.698115526034"
+   ],
+   "premium": [
+    "0.710511363636",
+    "2.823888413321"
+   ]
+  }
+ },
+ "risk_table": {
+  "fast": {
+   "chosen": {
+    "u": 0.93,
+    "dev_score": 0.65909,
+    "dev_ratio": 1.18044,
+    "boot": 0.001,
+    "stress": 0.029,
+    "stress_p99": 1.2693082459063425,
+    "clt": 0.0
+   },
+   "sweep_tail": [
+    {
+     "u": 1.03,
+     "dev_score": 0.67358,
+     "dev_ratio": 1.2599,
+     "boot": 0.601
+    },
+    {
+     "u": 1.04,
+     "dev_score": 0.67358,
+     "dev_ratio": 1.2731,
+     "boot": 0.703
+    },
+    {
+     "u": 1.05,
+     "dev_score": 0.675,
+     "dev_ratio": 1.29058,
+     "boot": 0.816
+    },
+    {
+     "u": 1.06,
+     "dev_score": 0.67386,
+     "dev_ratio": 1.29943,
+     "boot": 0.858
+    },
+    {
+     "u": 1.07,
+     "dev_score": 0.675,
+     "dev_ratio": 1.32289,
+     "boot": 0.915
+    },
+    {
+     "u": 1.08,
+     "dev_score": 0.67614,
+     "dev_ratio": 1.32891,
+     "boot": 0.925
+    },
+    {
+     "u": 1.09,
+     "dev_score": 0.67614,
+     "dev_ratio": 1.3354,
+     "boot": 0.938
+    },
+    {
+     "u": 1.1,
+     "dev_score": 0.67699,
+     "dev_ratio": 1.3465,
+     "boot": 0.955
+    }
+   ]
+  },
+  "balanced": {
+   "chosen": {
+    "u": 0.85,
+    "dev_score": 0.69119,
+    "dev_ratio": 1.69812,
+    "boot": 0.006,
+    "stress": 0.02,
+    "stress_p99": 2.0612516381897943,
+    "clt": 0.0
+   },
+   "sweep_tail": [
+    {
+     "u": 1.03,
+     "dev_score": 0.70028,
+     "dev_ratio": 2.19233,
+     "boot": 0.768
+    },
+    {
+     "u": 1.04,
+     "dev_score": 0.70142,
+     "dev_ratio": 2.22181,
+     "boot": 0.809
+    },
+    {
+     "u": 1.05,
+     "dev_score": 0.70312,
+     "dev_ratio": 2.23683,
+     "boot": 0.823
+    },
+    {
+     "u": 1.06,
+     "dev_score": 0.70426,
+     "dev_ratio": 2.25088,
+     "boot": 0.841
+    },
+    {
+     "u": 1.07,
+     "dev_score": 0.70256,
+     "dev_ratio": 2.45988,
+     "boot": 0.935
+    },
+    {
+     "u": 1.08,
+     "dev_score": 0.70312,
+     "dev_ratio": 2.66554,
+     "boot": 0.946
+    },
+    {
+     "u": 1.09,
+     "dev_score": 0.70256,
+     "dev_ratio": 2.8979,
+     "boot": 0.984
+    },
+    {
+     "u": 1.1,
+     "dev_score": 0.70369,
+     "dev_ratio": 2.91543,
+     "boot": 0.985
+    }
+   ]
+  },
+  "premium": {
+   "chosen": {
+    "u": null,
+    "dev_score": 0.71051,
+    "dev_ratio": 2.82389,
+    "boot": 0.005,
+    "stress": 0.019,
+    "stress_p99": 4.075193197386866,
+    "clt": 0.0
+   },
+   "sweep_tail": [
+    {
+     "u": null,
+     "dev_score": 0.71051,
+     "dev_ratio": 2.82389,
+     "boot": 0.005,
+     "stress": 0.019,
+     "stress_p99": 4.075193197386866,
+     "clt": 0.0
+    }
+   ]
+  }
+ }
+}

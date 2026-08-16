@@ -1,0 +1,54 @@
+{
+ "spec": {
+  "score_members": [
+   "xgb-mono",
+   "irt1d",
+   "knn-k40",
+   "lgbm"
+  ],
+  "cost_mean": [
+   "lgbm",
+   "xgb-mono"
+  ],
+  "premium_k1_cost": "lgbm-q90",
+  "fast": {
+   "decision": "greedy",
+   "allow_k1": false,
+   "utilization": 0.93
+  },
+  "balanced": {
+   "decision": "greedy",
+   "allow_k1": false,
+   "utilization": 0.88
+  },
+  "premium": {
+   "decision": "two-stage",
+   "k1_utilization": 0.65,
+   "fill_utilization": 0.7,
+   "k1_cost_cap": 0.1
+  }
+ },
+ "dev_official": {
+  "final": "0.684318181818",
+  "tiers": {
+   "fast": {
+    "score": "0.659090909091",
+    "ratio": "1.180437123011",
+    "boot_over": 0.001,
+    "stress_over_50": 0.021
+   },
+   "balanced": {
+    "score": "0.691761363636",
+    "ratio": "1.677355782407",
+    "boot_over": 0.0,
+    "stress_over_50": 0.0
+   },
+   "premium": {
+    "score": "0.710511363636",
+    "ratio": "2.823888413321",
+    "boot_over": 0.005,
+    "stress_over_50": 0.016
+   }
+  }
+ }
+}

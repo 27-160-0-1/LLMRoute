@@ -1,0 +1,237 @@
+{
+ "summary": {
+  "pred_set": "blend6-cost2",
+  "premium_d4": [
+   0.85,
+   0.75
+  ],
+  "chosen_utilization": {
+   "fast": 0.92,
+   "balanced": 0.81,
+   "premium": 0.6
+  },
+  "risk": {
+   "fast": {
+    "u": 0.92,
+    "dev_score": 0.65795,
+    "dev_ratio": 1.14818,
+    "boot": 0.0,
+    "stress": 0.01,
+    "stress_p99": 1.2487852625946074,
+    "clt": 0.0
+   },
+   "balanced": {
+    "u": 0.81,
+    "dev_score": 0.69091,
+    "dev_ratio": 1.69414,
+    "boot": 0.008,
+    "stress": 0.024,
+    "stress_p99": 2.0527977995991873,
+    "clt": 0.0
+   },
+   "premium": {
+    "u": 0.6,
+    "dev_score": 0.71591,
+    "dev_ratio": 3.17805,
+    "boot": 0.084
+   }
+  },
+  "dev_final": "0.685227272727",
+  "dev_tiers": {
+   "fast": [
+    "0.657954545455",
+    "1.148175539345"
+   ],
+   "balanced": [
+    "0.690909090909",
+    "1.694143761349"
+   ],
+   "premium": [
+    "0.715909090909",
+    "3.178047847414"
+   ]
+  }
+ },
+ "risk_table": {
+  "fast": {
+   "chosen": {
+    "u": 0.92,
+    "dev_score": 0.65795,
+    "dev_ratio": 1.14818,
+    "boot": 0.0,
+    "stress": 0.01,
+    "stress_p99": 1.2487852625946074,
+    "clt": 0.0
+   },
+   "sweep_tail": [
+    {
+     "u": 1.03,
+     "dev_score": 0.67614,
+     "dev_ratio": 1.27795,
+     "boot": 0.73
+    },
+    {
+     "u": 1.04,
+     "dev_score": 0.6767,
+     "dev_ratio": 1.29636,
+     "boot": 0.828
+    },
+    {
+     "u": 1.05,
+     "dev_score": 0.6767,
+     "dev_ratio": 1.30919,
+     "boot": 0.891
+    },
+    {
+     "u": 1.06,
+     "dev_score": 0.67727,
+     "dev_ratio": 1.32134,
+     "boot": 0.925
+    },
+    {
+     "u": 1.07,
+     "dev_score": 0.67955,
+     "dev_ratio": 1.37714,
+     "boot": 0.975
+    },
+    {
+     "u": 1.08,
+     "dev_score": 0.68295,
+     "dev_ratio": 1.38861,
+     "boot": 0.984
+    },
+    {
+     "u": 1.09,
+     "dev_score": 0.6821,
+     "dev_ratio": 1.39939,
+     "boot": 0.987
+    },
+    {
+     "u": 1.1,
+     "dev_score": 0.68324,
+     "dev_ratio": 1.4107,
+     "boot": 0.993
+    }
+   ]
+  },
+  "balanced": {
+   "chosen": {
+    "u": 0.81,
+    "dev_score": 0.69091,
+    "dev_ratio": 1.69414,
+    "boot": 0.008,
+    "stress": 0.024,
+    "stress_p99": 2.0527977995991873,
+    "clt": 0.0
+   },
+   "sweep_tail": [
+    {
+     "u": 1.03,
+     "dev_score": 0.70511,
+     "dev_ratio": 2.29173,
+     "boot": 0.878
+    },
+    {
+     "u": 1.04,
+     "dev_score": 0.70625,
+     "dev_ratio": 2.308,
+     "boot": 0.894
+    },
+    {
+     "u": 1.05,
+     "dev_score": 0.70739,
+     "dev_ratio": 2.33262,
+     "boot": 0.911
+    },
+    {
+     "u": 1.06,
+     "dev_score": 0.70682,
+     "dev_ratio": 2.35773,
+     "boot": 0.921
+    },
+    {
+     "u": 1.07,
+     "dev_score": 0.70625,
+     "dev_ratio": 2.37701,
+     "boot": 0.934
+    },
+    {
+     "u": 1.08,
+     "dev_score": 0.70682,
+     "dev_ratio": 2.40913,
+     "boot": 0.947
+    },
+    {
+     "u": 1.09,
+     "dev_score": 0.70795,
+     "dev_ratio": 2.47122,
+     "boot": 0.968
+    },
+    {
+     "u": 1.1,
+     "dev_score": 0.70795,
+     "dev_ratio": 2.49667,
+     "boot": 0.973
+    }
+   ]
+  },
+  "premium": {
+   "chosen": {
+    "u": 0.6,
+    "dev_score": 0.71591,
+    "dev_ratio": 3.17805,
+    "boot": 0.084
+   },
+   "sweep_tail": [
+    {
+     "u": 1.03,
+     "dev_score": 0.75199,
+     "dev_ratio": 5.29229,
+     "boot": 0.983
+    },
+    {
+     "u": 1.04,
+     "dev_score": 0.75483,
+     "dev_ratio": 5.53813,
+     "boot": 0.994
+    },
+    {
+     "u": 1.05,
+     "dev_score": 0.75653,
+     "dev_ratio": 5.58313,
+     "boot": 0.994
+    },
+    {
+     "u": 1.06,
+     "dev_score": 0.75767,
+     "dev_ratio": 5.62698,
+     "boot": 0.996
+    },
+    {
+     "u": 1.07,
+     "dev_score": 0.75881,
+     "dev_ratio": 5.68729,
+     "boot": 0.996
+    },
+    {
+     "u": 1.08,
+     "dev_score": 0.75994,
+     "dev_ratio": 5.72573,
+     "boot": 0.996
+    },
+    {
+     "u": 1.09,
+     "dev_score": 0.75994,
+     "dev_ratio": 5.75839,
+     "boot": 0.996
+    },
+    {
+     "u": 1.1,
+     "dev_score": 0.76051,
+     "dev_ratio": 5.78111,
+     "boot": 0.997
+    }
+   ]
+  }
+ }
+}
