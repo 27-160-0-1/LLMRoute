@@ -51,21 +51,53 @@ def save(fig, name, title):
     CHARTS.append((title, base64.b64encode(buf.getvalue()).decode()))
 
 
+# 2026-08-17 감사(exp/audit/, exp/ceiling-check.md)로 확정한 실측값.
+# MEASURED: 동결 정책을 공식 채점기로 직접 재측정한 값.
+#   조회표 OFF = 일반화 추정치, 조회표 ON = Dev 전 문항 적중(암기)이므로 성능 지표가 아님.
+# NULL_RANDOM_FEATURES: 특징을 난수로 대체해도 나오는 점수. 진짜 무정보 기준선은
+#   all-light 0.6193이 아니라 이 값이며, 이득 대부분이 비용모델+배분기에서 나옴을 뜻한다.
+MEASURED = [
+    ("검증 실측 — 조회표 OFF (정직한 일반화)", 0.684318, "#1d9e75"),
+    ("검증 실측 — 조회표 ON (암기, 성능 아님)", 0.760284, "#d03b3b"),
+]
+NULL_RANDOM_FEATURES = 0.656297
+
+
 def chart_leaderboard(rows):
-    rows = sorted(rows, key=lambda r: float(r["metrics"]["weighted_final"]))
-    names = [f"{r['exp_id']} {r['config'].get('name', '')[:44]}" for r in rows]
-    finals = [float(r["metrics"]["weighted_final"]) for r in rows]
-    colors = ["#888888" if r["family"] == "reference" else "#3b7dd8" for r in rows]
-    fig, ax = plt.subplots(figsize=(9, max(2.5, 0.32 * len(rows))))
+    entries = [
+        (
+            f"{r['exp_id']} {r['config'].get('name', '')[:44]}",
+            float(r["metrics"]["weighted_final"]),
+            "#888888" if r["family"] == "reference" else "#3b7dd8",
+        )
+        for r in rows
+    ]
+    entries.extend((n, v, c) for n, v, c in MEASURED)
+    entries.sort(key=lambda e: e[1])
+    names = [e[0] for e in entries]
+    finals = [e[1] for e in entries]
+    colors = [e[2] for e in entries]
+    fig, ax = plt.subplots(figsize=(9, max(2.5, 0.32 * len(entries))))
     ax.barh(names, finals, color=colors)
     ax.axvline(ORACLE["final"], color="red", ls="--", lw=1, label=f"budget-oracle {ORACLE['final']}")
     ax.axvline(0.6954, color="orange", ls=":", lw=1, label="hash-regex 0.6954")
+    ax.axvline(
+        NULL_RANDOM_FEATURES,
+        color="#7a4fbf",
+        ls="-.",
+        lw=1.2,
+        label=f"무정보 null (랜덤 특징) {NULL_RANDOM_FEATURES:.4f}",
+    )
+    ax.axvspan(0.55, NULL_RANDOM_FEATURES, color="#7a4fbf", alpha=0.06)
     for i, v in enumerate(finals):
         ax.text(v + 0.001, i, f"{v:.4f}", va="center", fontsize=7)
-    ax.set_xlabel("가중 최종점수 (dev)")
+    for i, n in enumerate(names):
+        if n.startswith("검증 실측"):
+            ax.get_yticklabels()[i].set_fontweight("bold")
+    ax.set_xlabel("가중 최종점수 (dev) — 음영 구간은 무정보 null 이하")
     ax.set_xlim(0.55, 0.85)
     ax.legend(loc="lower right", fontsize=7)
-    save(fig, "leaderboard", "1. 리더보드 — 전 실험 가중 최종점수")
+    save(fig, "leaderboard", "1. 리더보드 — 전 실험 가중 최종점수 (2026-08-17 감사 실측 반영)")
 
 
 def chart_pareto(rows):

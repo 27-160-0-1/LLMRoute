@@ -1,12 +1,12 @@
 # SPDX-FileCopyrightText: Copyright 2026 SKT OSSP challenge participant
 # SPDX-License-Identifier: Apache-2.0
 
-"""Final prompt-only router: 4-member score blend + token-head cost models.
+"""Final prompt-only router: xgb-mono score head + token-head cost models.
 
 Pipeline per tier run:
   1. parse inputs (prompt/messages content only)
   2. deterministic features (features_v2)
-  3. members: xgb-mono, irt1d, knn-k40, lgbm  -> blended scores;
+  3. score: xgb-mono (monotone multi-output) alone;
      lgbm+xgb token heads -> mean costs; lgbm q90 -> conservative k1 cost
   4. exact-match lookup (public Train/Dev outcomes, rule-allowed) overrides
      predictions with realized values
@@ -59,23 +59,18 @@ class FinalRouter:
     def __init__(self, bundle: Optional[Path] = None) -> None:
         import lightgbm as lgb
         import xgboost as xgb
-        from scipy import sparse
 
         self.bundle = Path(bundle) if bundle else _bundle_dir()
         b = self.bundle
         self.policy_spec = json.loads((b / "policy.json").read_text(encoding="utf-8"))
         self.rates = np.asarray(self.policy_spec["rates"], dtype=np.float64)
+        # SVD는 LightGBM 토큰 헤드의 입력(dense81 + SVD128x2)에만 쓴다.
         self.svd_word = np.load(b / "svd-word.npz")["components"]
         self.svd_char = np.load(b / "svd-char.npz")["components"]
-        irt = np.load(b / "irt.npz")
-        self.irt_W = irt["W"]
-        self.irt_a = irt["a"]
-        self.irt_b = irt["b"]
-        self.scaler_mean = irt["scaler_mean"]
-        self.scaler_scale = irt["scaler_scale"]
+        # LightGBM은 비용 전용: lin/lout 평균 토큰, q90 상한 토큰.
         self.lgbm = {
             name: lgb.Booster(model_file=str(b / "lgbm" / f"{name}.txt"))
-            for name in [f"{kind}-{j}" for kind in ("score", "lin", "lout", "q90") for j in range(3)]
+            for name in [f"{kind}-{j}" for kind in ("lin", "lout", "q90") for j in range(3)]
         }
         self.xgb_keep = np.load(b / "xgb" / "keep-cols.npy")
         self.xgb_score = xgb.Booster()
@@ -86,12 +81,6 @@ class FinalRouter:
                 booster = xgb.Booster()
                 booster.load_model(str(b / "xgb" / f"{kind}-{j}.json"))
                 self.xgb_tokens[f"{kind}-{j}"] = booster
-        self.knn_index = sparse.load_npz(b / "knn" / "index.npz")
-        knn_out = np.load(b / "knn" / "outcomes.npz")
-        self.knn_scores = knn_out["scores"]
-        self.knn_logcost = knn_out["logcost"]
-        self.knn_fb_score = knn_out["fb_score"]
-        self.knn_fb_logcost = knn_out["fb_logcost"]
         lookup = np.load(b / "lookup.npz")
         self.lookup_key = np.ascontiguousarray(lookup["key"]).view("V32").ravel()
         self.lookup_scores = lookup["scores"]
@@ -113,9 +102,6 @@ class FinalRouter:
         dense, word, char = features_v2.featurize_batch(texts, message_counts)
         x_svd = np.hstack([dense, word @ self.svd_word.T, char @ self.svd_char.T])
 
-        lgbm_score = np.column_stack(
-            [self.lgbm[f"score-{j}"].predict(x_svd) for j in range(3)]
-        )
         lgbm_lin = np.column_stack([self.lgbm[f"lin-{j}"].predict(x_svd) for j in range(3)])
         lgbm_lout = np.column_stack([self.lgbm[f"lout-{j}"].predict(x_svd) for j in range(3)])
         lgbm_q90 = np.column_stack([self.lgbm[f"q90-{j}"].predict(x_svd) for j in range(3)])
@@ -140,36 +126,11 @@ class FinalRouter:
             np.exp(xgb_lin) * self.rates[:, 0] / 1e6 + np.exp(xgb_lout) * self.rates[:, 1] / 1e6
         )
 
-        x_scaled = (dense - self.scaler_mean) / self.scaler_scale
-        x_irt = np.hstack([x_scaled, word @ self.svd_word.T, char @ self.svd_char.T])
-        z = (x_irt @ self.irt_W.T) @ self.irt_a.T + self.irt_b
-        irt_score = 1.0 / (1.0 + np.exp(-z))
-
-        # knn: cosine over L2-normalized hstack rows
-        x_pair = sparse.hstack([word, char], format="csr")
-        norms = np.sqrt(np.asarray(x_pair.multiply(x_pair).sum(axis=1)).ravel())
-        inv = np.divide(1.0, norms, out=np.zeros_like(norms), where=norms > 0)
-        x_pair = sparse.diags(inv) @ x_pair
-        sim = np.asarray((x_pair @ self.knn_index.T).todense(), dtype=np.float64)
-        k = 40
-        part = np.argpartition(sim, -k, axis=1)[:, -k:]
-        rows = np.arange(sim.shape[0])[:, None]
-        vals = sim[rows, part]
-        order = np.argsort(-vals, axis=1, kind="stable")
-        idx = part[rows, order]
-        sims = sim[rows, idx]
-        w = np.clip(sims, 0.0, None) ** 3
-        wsum = w.sum(axis=1, keepdims=True)
-        ok = wsum[:, 0] > 0
-        knn_score = np.where(
-            ok[:, None],
-            (w[:, :, None] * self.knn_scores[idx]).sum(axis=1) / np.maximum(wsum, 1e-300),
-            self.knn_fb_score[None, :],
-        )
-
-        blend_score = np.clip(
-            (xgb_score + irt_score + knn_score + np.clip(lgbm_score, 0, 1)) / 4.0, 0.0, 1.0
-        )
+        # 점수 예측은 단조제약 XGBoost multi-output 하나만 쓴다. 4멤버 블렌드는
+        # 공개 Dev에서 기여가 +0.0016(95% CI [-0.0048, +0.0083], p(<=0)=0.31)로
+        # 0과 구별되지 않았고, 단독 xgb-mono가 세 모델 모두에서 MAE가 더 낮았다.
+        # 근거: exp/audit/A7-overfit-falsification.md, exp/audit-verdict.md
+        blend_score = xgb_score
         cost_mean = self._monotone(np.exp((np.log(lgbm_cost) + np.log(xgb_cost)) / 2.0))
         cost_q90 = cost_mean.copy()
         cost_q90[:, 2] = lgbm_q90_cost[:, 2]

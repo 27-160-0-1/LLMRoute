@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2026 SKT OSSP challenge participant
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # 최종 보고서 — SKT OSSP 2026 Efficient LLM Routing Challenge
 
 작성: 2026-08-16. 모든 수치는 공식 Decimal 채점기(`ossp_router.scoring` /

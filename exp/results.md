@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2026 SKT OSSP challenge participant
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # 실험 결과 (공식 Decimal 채점기; exp/make_report.py가 registry.jsonl에서 자동 생성)
 
 | exp_id | family | 접근법 | Fast 점수/비용비 | Balanced 점수/비용비 | Premium 점수/비용비 | 가중 최종점수 | 예산초과확률(F/B/P) | 등급당 추론시간 | 비고 |

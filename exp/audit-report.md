@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2026 SKT OSSP challenge participant
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # 감사 보고서 (v2-1) — 2026-08-16
 
 모든 항목은 실제 실행으로 검증. 재현 명령: `.venv\Scripts\python.exe exp\selftest.py`,

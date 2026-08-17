@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: Copyright 2026 SKT OSSP challenge participant
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # EDA — SKT OSSP 2026 LLM Router Challenge
 
 

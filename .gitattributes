@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Copyright 2026 SKT OSSP challenge participant
+# SPDX-License-Identifier: Apache-2.0
+
+# 기본: 저장소는 LF로 정규화한다.
+* text=auto eol=lf
+
+# 동결 학습 산출물은 바이트 단위로 보존해야 한다.
+# core.autocrlf=true 인 Windows 체크아웃에서 LightGBM .txt 모델이 CRLF로
+# 변환되면 lgb.Booster(model_file=...)가
+# "[LightGBM] [Fatal] Model format error, expect a tree here" 로 실패한다.
+# 그 체크아웃에서 빌드한 linux/arm64 이미지는 세 등급 모두 기동 실패한다.
+models/final-v1/** -text -diff
+
+# 이진 자산
+*.npz binary
+*.npy binary
+*.parquet binary
+*.png binary

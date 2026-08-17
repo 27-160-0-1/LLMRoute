@@ -1,9 +1,6 @@
 {
  "blend_members": [
-  "xgb-mono",
-  "irt1d",
-  "knn-k40",
-  "lgbm"
+  "xgb-mono"
  ],
  "cost_mean_members": [
   "lgbm",
@@ -41,5 +38,5 @@
   "k1_cost_source": "lgbm-q90"
  },
  "feature_version": 2,
- "registry_ref": "E049"
+ "registry_ref": "E049-xgbscore"
 }
